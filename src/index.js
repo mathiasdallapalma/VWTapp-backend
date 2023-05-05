@@ -7,8 +7,7 @@ mongoose.set('strictQuery', true);
 import { userRouter } from "./routes/user.js";
 import { recipesRouter } from "./routes/recipes.js";
 
-import dotenv from 'dotenv';
-dotenv.config()
+
 
 
 const app = express();
@@ -16,8 +15,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/auth", userRouter);
-app.use("/recipes", recipesRouter);
+app.use("/api/v1/auth", userRouter);
+app.use("/api/v1/recipes", recipesRouter);
 
 
 
