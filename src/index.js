@@ -1,14 +1,16 @@
 import express from "express";
 import cors from "cors";
-
 import mongoose from "mongoose";
 mongoose.set('strictQuery', true);
 
 import { userRouter } from "./routes/user.js";
 import { recipesRouter } from "./routes/recipes.js";
 
+import schedule from 'node-schedule';
+import guruwalk_schedulejob from './utils/guruwalk_scheduleJob.js'
 
-
+import dotenv from "dotenv"
+dotenv.config();
 
 const app = express();
 
@@ -21,11 +23,30 @@ app.use("/api/v1/recipes", recipesRouter);
 
 
 /* --- DB Connection --- */
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true , useUnifiedTopology: true})
-.then(() => {
-    console.log("Connected to database")
+async function startServer() {
+  try {
+    await mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("Connected to database");
+
     /* --- Server Starting --- */
     app.listen(3001, () => console.log("Server started"));
-})
-.catch((error) => console.error("Error connecting to database:",error));
+  } catch (error) {
+    console.error("Error connecting to database:", error);
+  }
+}
+
+await startServer();
+
+/* --- Scheduele Job every hour --- */
+var j = schedule.scheduleJob('0 * * * *', function () {
+  guruwalk_schedulejob();
+});
+
+
+
+
+
+
+
+
 
