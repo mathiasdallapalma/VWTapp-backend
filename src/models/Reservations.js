@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const ReservationsSchema = mongoose.Schema({
-  reservation_guruWalk: {
+  reservation_id: {
     type: String,
     required: false,
   },

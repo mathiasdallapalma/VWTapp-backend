@@ -42,6 +42,7 @@ await startServer();
 var j = schedule.scheduleJob('0 * * * *', function () {
   guruwalk_schedulejob();
   freetour_schedulejob();
+  console.log("It's ... o'clock and all is good")
 });
 
 
