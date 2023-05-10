@@ -1,6 +1,3 @@
-import csvParser from 'csv-parser';
-import { TourModel } from '../models/Tour.js';
-import { ReservationModel } from '../models/Reservations.js';
 import moment from 'moment';
 import request from "request"
 import mongoose from "mongoose";
@@ -27,47 +24,20 @@ async function storeRowtoDB(row) {
     const combinedDateTime = Date.parse(dateObj)
 
     const tourResData = {
-        reservation_guruWalk: row[0],
+        reservation_id: row[0],
         walker: row[3],
         num_participants: parseInt(row[5]),
         site: 'GuruWalk',
     };
 
-    let id = mongoose.Types.ObjectId();
-
     const tourData = {
-        _id: id,
         date: combinedDateTime,
         title: row[4],
         reservations: []
     };
 
-    let reservation = await ReservationModel.findOne({ reservation_guruWalk: row[0] }); // Find a reservation with the id matching the current row
+    await saveData(tourData,tourResData);
 
-    if (!reservation) {
-        reservation = new ReservationModel(tourResData);
-        await reservation.save();
-    }
-
-    let tour = await TourModel.findOne({ title: row[4], date: combinedDateTime }); // Find a tour with the title and date matching the current row
-
-    if (!tour) {
-        // Create a new tour if it doesn't exist
-        tour = new TourModel(tourData);
-        tour.reservations = [reservation._id];
-        await tour.save();
-    } else {
-        // If a tour was found, add the reservation data to its reservations array
-        // First, check if the reservation already exists in the array to avoid duplicates
-
-        const existingRes = tour.reservations.find(res =>
-            res.equals(reservation._id)
-        );
-        if (!existingRes) {
-            tour.reservations.push(reservation._id);
-            await tour.save();
-        }
-    }
 }
 
 const processRows = async (rows) => {
@@ -129,8 +99,6 @@ async function guruwalk_schedulejob() {
     } else {
         console.error('CSV string is empty');
     }
-
-
 
 }
 
