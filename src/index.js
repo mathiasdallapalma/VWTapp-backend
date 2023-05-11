@@ -40,6 +40,7 @@ await startServer();
 
 /* --- Scheduele Job every hour --- */
 var j = schedule.scheduleJob('0 * * * *', function () {
+  console.log('... o\'clock and all\' well!');
   guruwalk_schedulejob();
   freetour_schedulejob();
 });
