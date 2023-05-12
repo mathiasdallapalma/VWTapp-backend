@@ -1,7 +1,7 @@
 import {ReservationModel} from '../models/Reservations.js';
 import {TourModel} from '../models/Tours.js';
 async function saveData(tourData,tourResData){
-    //console.log("saveData:",tourData,tourResData);
+    console.log("saveData:",tourData,tourResData);
     let reservation;
     switch (tourData.site) {
         case 'GuruWalk':

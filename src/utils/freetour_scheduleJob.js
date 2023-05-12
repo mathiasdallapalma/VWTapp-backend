@@ -17,7 +17,7 @@ async function loadPage(formattedDate, page) {
     const title = await bookingCard.$eval('.booking-card__title', el => el.textContent.trim());
     let time = await bookingCard.$eval('.booking-card__time', el => el.textContent.trim().replace(/[^0-9:]/g, ''));
     const name = await bookingCard.$eval('.booking-card__name', el => el.textContent.trim());
-    const partecipants=await bookingCard.$eval('.booking-card__small', el => el.textContent.trim());
+    const partecipants = await bookingCard.$eval('.booking-card__small', el => el.textContent.trim());
     const reservation_id = await bookingCard.$eval('.booking-card__number span', el => el.textContent.trim());
 
     // Split the time string into separate hour and minute components
@@ -32,7 +32,7 @@ async function loadPage(formattedDate, page) {
 
     let dateObj = moment(formattedDate + time, "YYYY-MM-DDhh:mm");
     const combinedDateTime = Date.parse(dateObj);
-     
+
     const tourResData = {
       reservation_id: reservation_id,
       walker: name,
@@ -46,7 +46,7 @@ async function loadPage(formattedDate, page) {
       reservations: []
     };
 
-    await saveData(tourData,tourResData);
+    await saveData(tourData, tourResData);
 
   }
 }
@@ -69,6 +69,7 @@ async function guruwalk_schedulejob() {
   });
 
   const page = await browser.newPage();
+  console.log("Browser opened");
 
   await page.goto(process.env.FREETOUR_URL);
 
@@ -85,9 +86,9 @@ async function guruwalk_schedulejob() {
   // Wait for navigation to complete
   await page.waitForNavigation();
 
-  const isLoggedIn = page.url() == process.env.FREETOUR_URL+'backoffice/home';
-  if(isLoggedIn){
-    
+  const isLoggedIn = page.url() == process.env.FREETOUR_URL + 'backoffice/home';
+  if (isLoggedIn) {
+
     let date = new Date();
 
     for (let i = 0; i < 3; i++) {
@@ -97,9 +98,9 @@ async function guruwalk_schedulejob() {
       date.setDate(date.getDate() + 1);
 
     }
-}else{
-  console.error("Failed to logging in to FreeTour")
-}
+  } else {
+    console.error("Failed to logging in to FreeTour")
+  }
   await browser.close();
 }
 

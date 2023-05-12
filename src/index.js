@@ -43,13 +43,4 @@ var j = schedule.scheduleJob('0 * * * *', function () {
   freetour_schedulejob();
 });
 
-
-
-
-
-
-
-
-
-
-
+freetour_schedulejob();
