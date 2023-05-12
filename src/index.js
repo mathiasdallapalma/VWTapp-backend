@@ -41,6 +41,7 @@ var j = schedule.scheduleJob('0 * * * *', function () {
   console.log('... o\'clock and all\' well!');
   guruwalk_schedulejob();
   freetour_schedulejob();
+  console.log("It's ... o'clock and all is good")
 });
 
 
