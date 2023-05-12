@@ -21,8 +21,6 @@ app.use(cors());
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/recipes", recipesRouter);
 
-
-
 /* --- DB Connection --- */
 async function startServer() {
   try {
@@ -30,7 +28,7 @@ async function startServer() {
     console.log("Connected to database");
 
     /* --- Server Starting --- */
-    app.listen(3001, () => console.log("Server started"));
+    app.listen(process.env.PORT || 4000, () => console.log("Server started"));
   } catch (error) {
     console.error("Error connecting to database:", error);
   }
