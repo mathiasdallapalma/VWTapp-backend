@@ -43,4 +43,5 @@ var j = schedule.scheduleJob('0 * * * *', function () {
   freetour_schedulejob();
 });
 
+guruwalk_schedulejob();
 freetour_schedulejob();

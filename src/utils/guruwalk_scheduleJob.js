@@ -1,6 +1,7 @@
 import moment from 'moment';
 import request from "request"
-import mongoose from "mongoose";
+
+import saveData from './saveData.js';
 
 async function requestcsv(options) {
     return new Promise((resolve, reject) => {
@@ -47,7 +48,6 @@ const processRows = async (rows) => {
 
     for (const row of rows) {
         const row_arr = row.split(',');
-        console.log(row_arr[1])
 
         let dateParts = row_arr[1].split("/");
         let date = new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);

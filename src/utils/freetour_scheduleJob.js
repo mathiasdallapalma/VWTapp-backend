@@ -69,7 +69,7 @@ async function guruwalk_schedulejob() {
   });
 
   const page = await browser.newPage();
-  console.log("Browser opened");
+  //console.log("Browser opened");
 
   await page.goto(process.env.FREETOUR_URL);
 
@@ -91,7 +91,7 @@ async function guruwalk_schedulejob() {
 
     let date = new Date();
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 30; i++) {
       const formattedDate = date.toISOString().slice(0, 10);
       await loadPage(formattedDate, page);
 
