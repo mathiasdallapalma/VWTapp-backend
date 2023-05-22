@@ -9,6 +9,7 @@ import { recipesRouter } from "./routes/recipes.js";
 import schedule from 'node-schedule';
 import guruwalk_schedulejob from './utils/guruwalk_scheduleJob.js'
 import freetour_schedulejob from './utils/freetour_scheduleJob.js'
+import eventbrite_schedulejob from "./utils/eventbrite_scheduleJob.js";
 
 import dotenv from "dotenv"
 dotenv.config();
@@ -39,9 +40,10 @@ await startServer();
 /* --- Scheduele Job every hour --- */
 var j = schedule.scheduleJob('0 * * * *', function () {
   console.log('... o\'clock and all\' well!');
-  guruwalk_schedulejob();
+  //guruwalk_schedulejob();
   freetour_schedulejob();
+  eventbrite_schedulejob();
 });
 
-guruwalk_schedulejob();
-freetour_schedulejob();
+
+
