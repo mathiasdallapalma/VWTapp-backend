@@ -1,6 +1,5 @@
 import moment from 'moment';
 import request from "request"
-
 import saveData from './saveData.js';
 
 async function requestcsv(options) {
@@ -8,7 +7,7 @@ async function requestcsv(options) {
         request(options, function (error, response) {
             if (error) {
                 console.error(error);
-                reject(error); 
+                reject(error);
             } else {
                 resolve(response.body);
             }
@@ -37,25 +36,30 @@ async function storeRowtoDB(row) {
         reservations: []
     };
 
-    await saveData(tourData,tourResData);
+    await saveData(tourData, tourResData);
 
 }
 
 const processRows = async (rows) => {
     let futureMonth = new Date();
     futureMonth.setMonth(futureMonth.getMonth() + 1);
-    
+
 
     for (const row of rows) {
-        const row_arr = row.split(',');
+        try {
+            const row_arr = row.split(',');
 
-        let dateParts = row_arr[1].split("/");
-        let date = new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);
+            let dateParts = row_arr[1].split("/");
+            let date = new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);
 
-        if (date.getTime() < futureMonth.getTime()) {
-            await storeRowtoDB(row_arr);
-        } else {
-            break;
+            if (date.getTime() < futureMonth.getTime()) {
+                await storeRowtoDB(row_arr);
+            } else {
+                break;
+            }
+        }
+        catch {
+            console.error("An error occurred while scraping the following line in the guruwalk_scheduleJob function: ", row)
         }
     };
 }
@@ -63,7 +67,7 @@ const processRows = async (rows) => {
 async function guruwalk_schedulejob() {
     var options = {
         'method': 'POST',
-        'url': 'https://www.guruwalk.com/gurus/bookings/'+process.env.GURUWALK_LINK,
+        'url': 'https://www.guruwalk.com/gurus/bookings/' + process.env.GURUWALK_LINK,
         'headers': {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Cookie': process.env.GURUWALK_COOKIE
@@ -81,6 +85,7 @@ async function guruwalk_schedulejob() {
     }
 
     // Validate if the CSV string is not empty
+    //TODO check if the request has been successful (200)
     if (myCsvString !== undefined && myCsvString !== null) {
 
         const rows = myCsvString.split('\n');
