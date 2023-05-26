@@ -12,7 +12,7 @@ async function saveData(tourData,tourResData){
         await reservation.save();
     }
 
-    let tour = await TourModel.findOne({ title: tourData.title, date: tourData.date }); // Find a tour with the title and date matching the current row
+    let tour = await TourModel.findOne({ date: tourData.date }); // Find a tour with the date matching the current row
 
     if (!tour) {
         // Create a new tour if it doesn't exist

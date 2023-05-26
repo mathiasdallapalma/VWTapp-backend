@@ -6,9 +6,8 @@ import { verifyToken } from "./user.js";
 
 const router = express.Router();
 
-// Get all tours (Joined with partecipants)
+// Get all tours (Joined with partecipants and total of reservations)
 router.get('/', verifyToken, async (req, res) => {
-  console.log(req.query.size)
   let tours;
 
   try {
@@ -36,6 +35,11 @@ router.get('/', verifyToken, async (req, res) => {
               as: 'reservations',
             },
           },
+          {
+            $addFields: {
+              total_participants: { $sum: '$reservations.num_participants' },
+            },
+          },
         ]);
         res.json(tours);
         break;
@@ -60,6 +64,11 @@ router.get('/', verifyToken, async (req, res) => {
               as: 'reservations',
             },
           },
+          {
+            $addFields: {
+              total_participants: { $sum: '$reservations.num_participants' },
+            },
+          },
         ]);
         res.json(tours);
         break;
@@ -72,6 +81,11 @@ router.get('/', verifyToken, async (req, res) => {
               localField: 'reservations',
               foreignField: '_id',
               as: 'reservations',
+            },
+          },
+          {
+            $addFields: {
+              total_participants: { $sum: '$reservations.num_participants' },
             },
           },
         ]);

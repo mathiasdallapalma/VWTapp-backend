@@ -32,7 +32,7 @@ async function storeRowtoDB(row) {
 
     const tourData = {
         date: combinedDateTime,
-        title: row[4],
+        title: row[4].toLowerCase().trim(),
         reservations: []
     };
 
@@ -44,8 +44,10 @@ const processRows = async (rows) => {
     let futureMonth = new Date();
     futureMonth.setMonth(futureMonth.getMonth() + 1);
 
-
+    let i  =0;
     for (const row of rows) {
+        console.log('guruwalk completed at:'+(i*100)/rows.length)+'%';
+        i++;
         try {
             const row_arr = row.split(',');
 

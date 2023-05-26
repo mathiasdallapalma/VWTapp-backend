@@ -42,7 +42,7 @@ async function loadPage(formattedDate, page) {
 
     const tourData = {
       date: combinedDateTime,
-      title: title,
+      title: title.toLowerCase().trim(),
       reservations: []
     };
 
@@ -92,6 +92,7 @@ async function guruwalk_schedulejob() {
     let date = new Date();
 
     for (let i = 0; i < 30; i++) {
+      console.log('fretour completed at:'+(i*100)/30)+'%';
       const formattedDate = date.toISOString().slice(0, 10);
       await loadPage(formattedDate, page);
 

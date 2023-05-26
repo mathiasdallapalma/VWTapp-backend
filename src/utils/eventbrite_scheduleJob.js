@@ -14,12 +14,14 @@ async function eventbrite_schedulejob() {
 
         const bodyObj = (JSON.parse(response.body))
         const toursObj = bodyObj.events;
+        let i = 0;
 
         toursObj.forEach(element => {
-
+            console.log('eventbrite completed at:'+(i*100)/toursObj.length)+'%';
+            i++;
             const tourData = {
                 date: element.start.local,
-                title: element.name.text,
+                title: element.name.text.toLowerCase().trim(),
                 reservations: []
             };
 
@@ -30,15 +32,15 @@ async function eventbrite_schedulejob() {
                     'Authorization': process.env.EVENTBRITE_TOKEN,
                 }
             };
-            request(options, function (error, response) {
+            request(options, async function (error, response) {
 
-                if (error) throw new Error(error);
+                if (error) console.error(error);
 
                 const bodyObj = (JSON.parse(response.body))
                 const attendancesObj = bodyObj.attendees;
                 let reservations_array = new Map();
-
-                attendancesObj.forEach(element => {
+                for (const element of attendancesObj) {
+                
 
                     if (reservations_array.has(element.profile.name)) {
                         reservations_array.get(element.profile.name).num_participants = reservations_array.get(element.profile.name).num_participants + element.quantity;
@@ -51,11 +53,11 @@ async function eventbrite_schedulejob() {
                         };
                         reservations_array.set(element.profile.name, tourResData);
                     }
-                });
+                }
 
-                reservations_array.forEach((value, key) => {
-                    saveData(tourData,value)
-                })
+                for (const reservation of reservations_array.values()) {
+                    await saveData(tourData, reservation);
+                }
             });
         });
     });

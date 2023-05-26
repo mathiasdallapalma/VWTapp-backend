@@ -45,12 +45,16 @@ async function startServer() {
 await startServer();
 
 /* --- Scheduele Job every hour --- */
-var j = schedule.scheduleJob('48 * * * *', function () {
+var j = schedule.scheduleJob('28 * * * *', function () {
   console.log('... o\'clock and all\' well!');
-  guruwalk_schedulejob().then(console.log('guruwalk DONE'));
-  freetour_schedulejob().then(console.log('freetour DONE'));
-  eventbrite_schedulejob().then(console.log('eventbrite DONE'));
+  guruwalk_schedulejob();
+  freetour_schedulejob();
+  eventbrite_schedulejob();
 });
+
+
+
+
 
 
 
